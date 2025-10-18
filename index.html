@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Certificate Form - Preview & PDF</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    form {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.2);
+      margin-bottom: 20px;
+      width: 350px;
+    }
+
+    label {
+      font-weight: bold;
+      font-size: 14px;
+      display: block;
+      margin-top: 10px;
+    }
+
+    input {
+      width: 100%;
+      padding: 6px;
+      margin-top: 3px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 8px 15px;
+      background-color: #0078d7;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover { background-color: #005fa3; }
+
+    .preview-container {
+      position: relative;
+      width: 210mm;
+      height: 297mm;
+      border: 1px solid #aaa;
+      overflow: hidden;
+      background: white;
+    }
+
+    .preview-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .text-overlay {
+      position: absolute;
+      font-size: 12pt;
+      font-weight: bold;
+      color: black;
+      white-space: nowrap;
+    }
+
+    /* inch positioning */
+    #ageGroup { top: 1.78in; left:  1.85in; }
+    #participantName { top:  2.24in; left: 4.21in; }
+    #fatherName { top: 2.56in; left: 4.2in; }
+    #motherName { top: 2.9in; left: 4.2in; }
+    #schoolName { top: 3.3in; left: 4.2in; }
+    #address { top: 3.6in; left: 4.2in; }
+    #schoolPhone { top: 3.9in; left: 4.2in; }
+    #registrationNo { top: 4.2in; left: 4.2in; }
+    #dob { top: 4.7in; left: 4.2in; }
+    #dobWords { top: 5in; left: 4.2in; font-style: italic; font-size: 12pt; }
+    #age { top: 6.02in; left: 4.2in; }
+    #aadhaar { top: 5.25in; left: 4.2in; }
+    #passport { top: 5.52in; left: 4.2in; }
+    #discipline { top: 5.8in; left: 4.2in; }
+    #permanentAddress { top: 6.3in; left: 4.3in; }
+    #mobile { top: 6.53in; left: 4.5in; }
+    #admissionNo { top: 6.75in; left: 4.2in; }
+    #joiningDate { top: 7in; left: 4.2in; }
+    #standardThisYear { top: 7.3in; left: 4.2in; }
+    #standardLastYear { top: 7.55in; left: 4.2in; }
+    #bankDetails { top: 10.5in; left: 5in; }
+    #bankHolder { top: 11in; left: 5in; }
+    #bankName { top: 11.5in; left: 5in; }
+    #accountNo { top: 12in; left: 5in; }
+    #ifsc { top: 12.5in; left: 5in; }
+    #marks { top: 8.68in; left: 4.2in; }
+
+    /* Photo placement */
+    #photo {
+      position: absolute;
+      top: 0.77in;
+      left: 6.7in;
+      width: 1.2in;
+      height: 1.35in;
+      object-fit: cover;
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      .preview-container {
+        width: 100%;
+        height: auto;
+        border: none;
+        overflow-x: scroll;
+      }
+      .text-overlay { font-size: 12pt; }
+    }
+  </style>
+</head>
+<body>
+  <h2>Fill Certificate of Eligibility Details</h2>
+
+  <form id="form">
+    <label>Age Group:</label><input type="text" id="inputAge">
+    <label>Name of Participant:</label><input type="text" id="inputParticipant">
+    <label>Father's Name:</label><input type="text" id="inputFather">
+    <label>Mother's Name:</label><input type="text" id="inputMother">
+    <label>Name of School:</label><input type="text" id="inputSchool">
+    <label>Full Address of School:</label><input type="text" id="inputAddress">
+    <label>School's Phone No:</label><input type="text" id="inputPhone">
+    <label>Last Year Registration No (SGFI):</label><input type="text" id="inputRegNo">
+    <label>Date of Birth:</label><input type="date" id="inputDob">
+    <label>Aadhaar No:</label><input type="text" id="inputAadhaar">
+    <label>Passport No:</label><input type="text" id="inputPassport">
+    <label>Discipline / Game:</label><input type="text" id="inputDiscipline">
+    <label>Permanent Address:</label><input type="text" id="inputPermAddress">
+    <label>Mobile No:</label><input type="text" id="inputMobile">
+    <label>Admission No:</label><input type="text" id="inputAdmission">
+    <label>Date of Joining School:</label><input type="date" id="inputJoining">
+    <label>Standard & Section (This Year):</label><input type="text" id="inputStdThis">
+    <label>Standard Studying (Last Year):</label><input type="text" id="inputStdLast">
+    <label>Bank Details of Participant:</label><input type="text" id="inputBankDetails">
+    <label>Name of Bank Account Holder:</label><input type="text" id="inputHolder">
+    <label>Name of the Bank:</label><input type="text" id="inputBank">
+    <label>Account No:</label><input type="text" id="inputAccount">
+    <label>IFSC Code:</label><input type="text" id="inputIfsc">
+    <label>Personal Identification Marks:</label><input type="text" id="inputMarks">
+
+    <label>Upload Photo:</label><input type="file" id="inputPhoto" accept="image/*">
+
+    <button type="button" onclick="showPreview()">Preview</button>
+    <button type="button" onclick="downloadPDF()">Download PDF</button>
+  </form>
+
+  <div class="preview-container" id="preview">
+    <img src="wwwww.jpg" alt="Form Image">
+    <img id="photo">
+    <div id="ageGroup" class="text-overlay"></div>
+    <div id="participantName" class="text-overlay"></div>
+    <div id="fatherName" class="text-overlay"></div>
+    <div id="motherName" class="text-overlay"></div>
+    <div id="schoolName" class="text-overlay"></div>
+    <div id="address" class="text-overlay"></div>
+    <div id="schoolPhone" class="text-overlay"></div>
+    <div id="registrationNo" class="text-overlay"></div>
+    <div id="dob" class="text-overlay"></div>
+    <div id="dobWords" class="text-overlay"></div>
+    <div id="age" class="text-overlay"></div>
+    <div id="aadhaar" class="text-overlay"></div>
+    <div id="passport" class="text-overlay"></div>
+    <div id="discipline" class="text-overlay"></div>
+    <div id="current age" class="text-overlay"></div>
+    <div id="permanentAddress" class="text-overlay"></div>
+    <div id="mobile" class="text-overlay"></div>
+    <div id="admissionNo" class="text-overlay"></div>
+    <div id="joiningDate" class="text-overlay"></div>
+    <div id="standardThisYear" class="text-overlay"></div>
+    <div id="standardLastYear" class="text-overlay"></div>
+    <div id="bankDetails" class="text-overlay"></div>
+    <div id="bankHolder" class="text-overlay"></div>
+    <div id="bankName" class="text-overlay"></div>
+    <div id="accountNo" class="text-overlay"></div>
+    <div id="ifsc" class="text-overlay"></div>
+    <div id="marks" class="text-overlay"></div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <script>
+    const { jsPDF } = window.jspdf;
+
+    function numberToWords(num) {
+      const a = ["","one","two","three","four","five","six","seven","eight","nine","ten","eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen"];
+      const b = ["","","twenty","thirty","forty","fifty","sixty","seventy","eighty","ninety"];
+      if (num < 20) return a[num];
+      const tens = Math.floor(num / 10);
+      const ones = num % 10;
+      return b[tens] + (ones ? " " + a[ones] : "");
+    }
+
+    function dateToWords(dateStr) {
+      const date = new Date(dateStr);
+      if (isNaN(date)) return "";
+      const day = date.getDate();
+      const month = date.toLocaleString('en', { month: 'long' });
+      const year = date.getFullYear();
+      return `${numberToWords(day)} of ${month} ${year}`;
+    }
+
+    function calculateAge(dob) {
+      const birthDate = new Date(dob);
+      const refDate = new Date("2025-12-31");
+      let years = refDate.getFullYear() - birthDate.getFullYear();
+      let months = refDate.getMonth() - birthDate.getMonth();
+      let days = refDate.getDate() - birthDate.getDate();
+      if (days < 0) { months--; days += 30; }
+      if (months < 0) { years--; months += 12; }
+      return `${years} years ${months} months ${days} days`;
+    }
+
+    function showPreview() {
+      const get = id => document.getElementById(id).value;
+      const set = (id, val) => document.getElementById(id).textContent = val || "";
+      set('ageGroup', get('inputAge'));
+      set('participantName', get('inputParticipant'));
+      set('fatherName', get('inputFather'));
+      set('motherName', get('inputMother'));
+      set('schoolName', get('inputSchool'));
+      set('address', get('inputAddress'));
+      set('schoolPhone', get('inputPhone'));
+      set('registrationNo', get('inputRegNo'));
+      const dob = get('inputDob');
+      set('dob', dob);
+      set('dobWords', dateToWords(dob));
+      set('age', calculateAge(dob));
+      set('aadhaar', get('inputAadhaar'));
+      set('passport', get('inputPassport'));
+      set('discipline', get('inputDiscipline'));
+      set('permanentAddress', get('inputPermAddress'));
+      set('mobile', get('inputMobile'));
+      set('admissionNo', get('inputAdmission'));
+      set('joiningDate', get('inputJoining'));
+      set('standardThisYear', get('inputStdThis'));
+      set('standardLastYear', get('inputStdLast'));
+      set('bankDetails', get('inputBankDetails'));
+      set('bankHolder', get('inputHolder'));
+      set('bankName', get('inputBank'));
+      set('accountNo', get('inputAccount'));
+      set('ifsc', get('inputIfsc'));
+      set('marks', get('inputMarks'));
+
+      const photoInput = document.getElementById('inputPhoto');
+      const photo = document.getElementById('photo');
+      if (photoInput.files && photoInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = e => {
+          photo.src = e.target.result;
+          photo.style.display = 'block';
+        };
+        reader.readAsDataURL(photoInput.files[0]);
+      }
+    }
+
+    async function downloadPDF() {
+      const preview = document.getElementById('preview');
+      const canvas = await html2canvas(preview, { scale: 2 });
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      pdf.addImage(imgData, 'PNG', 0, 0, pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight());
+      pdf.save('certificate_form.pdf');
+    }
+  </script>
+</body>
+</html>
