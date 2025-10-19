@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Certificate Form - Load Details & PDF</title>
+  <title>ZPEO KANGAN</title>
+   <H2>This site works only in desktop view for Mobile users </H2>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -90,8 +91,8 @@
     #schoolPhone { top: 3.9in; left: 4.2in; }
     #registrationNo { top: 4.2in; left: 4.2in; }
     #dob { top: 4.7in; left: 4.2in; }
-    #dobWords { top: 5in; left: 4in; font-style: italic; font-size: 12pt; }
-    #age { top: 6.06in; left: 4.2in; }
+    #dobWords { top: 5in; left: 4.2in; font-style: italic; font-size: 12pt; }
+    #age { top: 6.05in; left: 4.2in; }
     #aadhaar { top: 5.25in; left: 4.2in; }
     #passport { top: 5.52in; left: 4.2in; }
     #discipline { top: 5.8in; left: 4.2in; }
@@ -101,10 +102,10 @@
     #joiningDate { top: 7in; left: 4.2in; }
     #standardThisYear { top: 7.3in; left: 4.2in; }
     #standardLastYear { top: 7.55in; left: 4.2in; }
-    #bankName { top: 8in; left: 5in; }
-    #bankHolder { top: 7.8in; left: 5in; }
-    #accountNo { top: 8.23in; left: 5in; }
-    #ifsc { top: 8.4in; left: 5in; }
+    #bankName { top: 10.5in; left: 5in; }
+    #bankHolder { top: 11in; left: 5in; }
+    #accountNo { top: 12in; left: 5in; }
+    #ifsc { top: 12.5in; left: 5in; }
     #marks { top: 8.68in; left: 4.2in; }
 
     #photo {
@@ -158,10 +159,11 @@
     <label>Upload Photo:</label><input type="file" id="inputPhoto" accept="image/*">
 
     <div style="display:flex;gap:8px;justify-content:center;">
-      <button type="button" onclick="showPreview()">Submit</button>
-      <button type="button" onclick="downloadPDF()">Download PDF</button>
-    </div>
-    <div class="note">* First click Submit, then click Download PDF.</div>
+  <button type="button" onclick="showPreview()">Submit</button>
+  <button type="button" onclick="downloadPDF()">Download PDF</button>
+  <button type="button" onclick="downloadJPG()">Download JPG</button>
+</div>
+    <div class="note">* First click Submit, then click Download PDF/JPG.</div>
   </form>
 
   <div class="preview-container" id="LoadDetails">
@@ -194,112 +196,132 @@
     <div id="marks" class="text-overlay"></div>
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-  <script>
-    const { jsPDF } = window.jspdf;
+<script>
+  const { jsPDF } = window.jspdf;
 
-    function numberToWords(num) {
-      const a = ["","one","two","three","four","five","six","seven","eight","nine","ten",
-        "eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen"];
-      const b = ["","","twenty","thirty","forty","fifty","sixty","seventy","eighty","ninety"];
-      if (num < 20) return a[num];
-      const tens = Math.floor(num / 10);
-      const ones = num % 10;
-      return b[tens] + (ones ? " " + a[ones] : "");
-    }
+  function numberToWords(num) {
+    const a = ["","one","two","three","four","five","six","seven","eight","nine","ten",
+      "eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen"];
+    const b = ["","","twenty","thirty","forty","fifty","sixty","seventy","eighty","ninety"];
+    if (num < 20) return a[num];
+    const tens = Math.floor(num / 10);
+    const ones = num % 10;
+    return b[tens] + (ones ? " " + a[ones] : "");
+  }
 
-    function dayToOrdinal(day) {
-      const ordinals = {
-        1: "first", 2: "second", 3: "third", 4: "fourth", 5: "fifth", 6: "sixth", 7: "seventh",
-        8: "eighth", 9: "ninth", 10: "tenth", 11: "eleventh", 12: "twelfth", 13: "thirteenth",
-        14: "fourteenth", 15: "fifteenth", 16: "sixteenth", 17: "seventeenth", 18: "eighteenth",
-        19: "nineteenth", 20: "twentieth", 21: "twenty first", 22: "twenty second", 23: "twenty third",
-        24: "twenty fourth", 25: "twenty fifth", 26: "twenty sixth", 27: "twenty seventh",
-        28: "twenty eighth", 29: "twenty ninth", 30: "thirtieth", 31: "thirty first"
+  function dayToOrdinal(day) {
+    const ordinals = {
+      1: "first", 2: "second", 3: "third", 4: "fourth", 5: "fifth", 6: "sixth", 7: "seventh",
+      8: "eighth", 9: "ninth", 10: "tenth", 11: "eleventh", 12: "twelfth", 13: "thirteenth",
+      14: "fourteenth", 15: "fifteenth", 16: "sixteenth", 17: "seventeenth", 18: "eighteenth",
+      19: "nineteenth", 20: "twentieth", 21: "twenty first", 22: "twenty second", 23: "twenty third",
+      24: "twenty fourth", 25: "twenty fifth", 26: "twenty sixth", 27: "twenty seventh",
+      28: "twenty eighth", 29: "twenty ninth", 30: "thirtieth", 31: "thirty first"
+    };
+    return ordinals[day] || "";
+  }
+
+  function convertYearToWords(year) {
+    if (year === 2000) return "two thousand";
+    let y = year - 2000;
+    return "two thousand " + numberToWords(y);
+  }
+
+  function dateToWords(dateStr) {
+    const date = new Date(dateStr);
+    if (isNaN(date)) return "";
+    const day = dayToOrdinal(date.getDate());
+    const month = date.toLocaleString('en', { month: 'long' }).toLowerCase();
+    const yearWords = convertYearToWords(date.getFullYear());
+    return `${day} of ${month} ${yearWords}`;
+  }
+
+  function formatDate(d) {
+    if (!d) return "";
+    const date = new Date(d);
+    const dd = String(date.getDate()).padStart(2, '0');
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const yyyy = date.getFullYear();
+    return `${dd}.${mm}.${yyyy}`;
+  }
+
+  function calculateAge(dob) {
+    const birthDate = new Date(dob);
+    const refDate = new Date("2025-12-31");
+    let years = refDate.getFullYear() - birthDate.getFullYear();
+    let months = refDate.getMonth() - birthDate.getMonth();
+    let days = refDate.getDate() - birthDate.getDate();
+    if (days < 0) { months--; days += 30; }
+    if (months < 0) { years--; months += 12; }
+    return `${years} years ${months} months ${days} days`;
+  }
+
+  function showPreview() {
+    const get = id => document.getElementById(id).value;
+    const set = (id, val) => document.getElementById(id).textContent = val || "";
+
+    set('ageGroup', get('inputAge'));
+    set('participantName', get('inputParticipant'));
+    set('fatherName', get('inputFather'));
+    set('motherName', get('inputMother'));
+    set('schoolName', get('inputSchool'));
+    set('address', get('inputAddress'));
+    set('schoolPhone', get('inputPhone'));
+    set('registrationNo', get('inputRegNo'));
+    
+    const dob = get('inputDob');
+    set('dob', formatDate(dob));
+    set('dobWords', dateToWords(dob));
+    set('age', calculateAge(dob));
+
+    set('aadhaar', get('inputAadhaar'));
+    set('passport', get('inputPassport'));
+    set('discipline', get('inputDiscipline'));
+    set('permanentAddress', get('inputPermAddress'));
+    set('mobile', get('inputMobile'));
+    set('admissionNo', get('inputAdmission'));
+    set('joiningDate', get('inputJoining'));
+    set('standardThisYear', get('inputStdThis'));
+    set('standardLastYear', get('inputStdLast'));
+    set('bankName', get('inputBankName'));
+    set('bankHolder', get('inputHolder'));
+    set('accountNo', get('inputAccount'));
+    set('ifsc', get('inputIfsc'));
+    set('marks', get('inputMarks'));
+
+    const photoInput = document.getElementById('inputPhoto');
+    const photo = document.getElementById('photo');
+    if (photoInput.files && photoInput.files[0]) {
+      const reader = new FileReader();
+      reader.onload = e => {
+        photo.src = e.target.result;
+        photo.style.display = 'block';
       };
-      return ordinals[day] || "";
+      reader.readAsDataURL(photoInput.files[0]);
     }
+  }
 
-    function convertYearToWords(year) {
-      const thousands = Math.floor(year / 1000);
-      const remainder = year % 1000;
-      return `two thousand ${numberToWords(Math.floor(remainder / 100))}${remainder % 100 ? " " + numberToWords(remainder % 100) : ""}`.trim();
-    }
+  async function downloadPDF() {
+    const preview = document.getElementById('LoadDetails');
+    const canvas = await html2canvas(preview, { scale: 2 });
+    const imgData = canvas.toDataURL('image/png');
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    pdf.addImage(imgData, 'PNG', 0, 0, pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight());
+    pdf.save('certificate_form.pdf');
+  }
 
-    function dateToWords(dateStr) {
-      const date = new Date(dateStr);
-      if (isNaN(date)) return "";
-      const day = dayToOrdinal(date.getDate());
-      const month = date.toLocaleString('en', { month: 'long' }).toLowerCase();
-      const year = date.getFullYear();
-      const yearWords = convertYearToWords(year);
-      return `${day} of ${month} ${yearWords}`;
-    }
-
-    function calculateAge(dob) {
-      const birthDate = new Date(dob);
-      const refDate = new Date("2025-12-31");
-      let years = refDate.getFullYear() - birthDate.getFullYear();
-      let months = refDate.getMonth() - birthDate.getMonth();
-      let days = refDate.getDate() - birthDate.getDate();
-      if (days < 0) { months--; days += 30; }
-      if (months < 0) { years--; months += 12; }
-      return `${years} years ${months} months ${days} days`;
-    }
-
-    function showPreview() {
-      const get = id => document.getElementById(id).value;
-      const set = (id, val) => document.getElementById(id).textContent = val || "";
-
-      set('ageGroup', get('inputAge'));
-      set('participantName', get('inputParticipant'));
-      set('fatherName', get('inputFather'));
-      set('motherName', get('inputMother'));
-      set('schoolName', get('inputSchool'));
-      set('address', get('inputAddress'));
-      set('schoolPhone', get('inputPhone'));
-      set('registrationNo', get('inputRegNo'));
-      const dob = get('inputDob');
-      set('dob', dob);
-      set('dobWords', dateToWords(dob));
-      set('age', calculateAge(dob));
-      set('aadhaar', get('inputAadhaar'));
-      set('passport', get('inputPassport'));
-      set('discipline', get('inputDiscipline'));
-      set('permanentAddress', get('inputPermAddress'));
-      set('mobile', get('inputMobile'));
-      set('admissionNo', get('inputAdmission'));
-      set('joiningDate', get('inputJoining'));
-      set('standardThisYear', get('inputStdThis'));
-      set('standardLastYear', get('inputStdLast'));
-      set('bankName', get('inputBankName'));
-      set('bankHolder', get('inputHolder'));
-      set('accountNo', get('inputAccount'));
-      set('ifsc', get('inputIfsc'));
-      set('marks', get('inputMarks'));
-
-      const photoInput = document.getElementById('inputPhoto');
-      const photo = document.getElementById('photo');
-      if (photoInput.files && photoInput.files[0]) {
-        const reader = new FileReader();
-        reader.onload = e => {
-          photo.src = e.target.result;
-          photo.style.display = 'block';
-        };
-        reader.readAsDataURL(photoInput.files[0]);
-      }
-    }
-
-    async function downloadPDF() {
-      const preview = document.getElementById('LoadDetails');
-      const canvas = await html2canvas(preview, { scale: 2 });
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      pdf.addImage(imgData, 'PNG', 0, 0, pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight());
-      pdf.save('certificate_form.pdf');
-    }
-  </script>
+  async function downloadJPG() {
+    const preview = document.getElementById('LoadDetails');
+    const canvas = await html2canvas(preview, { scale: 2 });
+    const imgData = canvas.toDataURL('image/jpeg', 1.0);
+    const link = document.createElement('a');
+    link.href = imgData;
+    link.download = 'certificate_form.jpg';
+    link.click();
+  }
+</script>
 </body>
 </html>
