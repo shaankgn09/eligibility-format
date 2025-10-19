@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Certificate Form - Preview & PDF</title>
+  <title>Certificate Form - Load Details & PDF</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -39,7 +39,7 @@
     }
 
     button {
-      margin-top: 10px;
+      margin-top: 8px;
       padding: 8px 15px;
       background-color: #0078d7;
       color: white;
@@ -48,6 +48,14 @@
       cursor: pointer;
     }
     button:hover { background-color: #005fa3; }
+
+    .note {
+      font-size: 13px;
+      color: #333;
+      margin-top: 5px;
+      font-style: italic;
+      text-align: center;
+    }
 
     .preview-container {
       position: relative;
@@ -72,9 +80,9 @@
       white-space: nowrap;
     }
 
-    /* inch positioning */
-    #ageGroup { top: 1.78in; left:  1.85in; }
-    #participantName { top:  2.24in; left: 4.21in; }
+    /* Text positioning */
+    #ageGroup { top: 1.78in; left: 1.85in; }
+    #participantName { top: 2.24in; left: 4.21in; }
     #fatherName { top: 2.56in; left: 4.2in; }
     #motherName { top: 2.9in; left: 4.2in; }
     #schoolName { top: 3.3in; left: 4.2in; }
@@ -82,8 +90,8 @@
     #schoolPhone { top: 3.9in; left: 4.2in; }
     #registrationNo { top: 4.2in; left: 4.2in; }
     #dob { top: 4.7in; left: 4.2in; }
-    #dobWords { top: 5in; left: 4.2in; font-style: italic; font-size: 12pt; }
-    #age { top: 6.02in; left: 4.2in; }
+    #dobWords { top: 5in; left: 4in; font-style: italic; font-size: 12pt; }
+    #age { top: 6.06in; left: 4.2in; }
     #aadhaar { top: 5.25in; left: 4.2in; }
     #passport { top: 5.52in; left: 4.2in; }
     #discipline { top: 5.8in; left: 4.2in; }
@@ -93,14 +101,12 @@
     #joiningDate { top: 7in; left: 4.2in; }
     #standardThisYear { top: 7.3in; left: 4.2in; }
     #standardLastYear { top: 7.55in; left: 4.2in; }
-    #bankDetails { top: 10.5in; left: 5in; }
-    #bankHolder { top: 11in; left: 5in; }
-    #bankName { top: 11.5in; left: 5in; }
-    #accountNo { top: 12in; left: 5in; }
-    #ifsc { top: 12.5in; left: 5in; }
+    #bankName { top: 8in; left: 5in; }
+    #bankHolder { top: 7.8in; left: 5in; }
+    #accountNo { top: 8.23in; left: 5in; }
+    #ifsc { top: 8.4in; left: 5in; }
     #marks { top: 8.68in; left: 4.2in; }
 
-    /* Photo placement */
     #photo {
       position: absolute;
       top: 0.77in;
@@ -144,20 +150,21 @@
     <label>Date of Joining School:</label><input type="date" id="inputJoining">
     <label>Standard & Section (This Year):</label><input type="text" id="inputStdThis">
     <label>Standard Studying (Last Year):</label><input type="text" id="inputStdLast">
-    <label>Bank Details of Participant:</label><input type="text" id="inputBankDetails">
+    <label>Bank Name:</label><input type="text" id="inputBankName">
     <label>Name of Bank Account Holder:</label><input type="text" id="inputHolder">
-    <label>Name of the Bank:</label><input type="text" id="inputBank">
     <label>Account No:</label><input type="text" id="inputAccount">
     <label>IFSC Code:</label><input type="text" id="inputIfsc">
     <label>Personal Identification Marks:</label><input type="text" id="inputMarks">
-
     <label>Upload Photo:</label><input type="file" id="inputPhoto" accept="image/*">
 
-    <button type="button" onclick="showPreview()">Preview</button>
-    <button type="button" onclick="downloadPDF()">Download PDF</button>
+    <div style="display:flex;gap:8px;justify-content:center;">
+      <button type="button" onclick="showPreview()">Submit</button>
+      <button type="button" onclick="downloadPDF()">Download PDF</button>
+    </div>
+    <div class="note">* First click Submit, then click Download PDF.</div>
   </form>
 
-  <div class="preview-container" id="preview">
+  <div class="preview-container" id="LoadDetails">
     <img src="wwwww.jpg" alt="Form Image">
     <img id="photo">
     <div id="ageGroup" class="text-overlay"></div>
@@ -174,16 +181,14 @@
     <div id="aadhaar" class="text-overlay"></div>
     <div id="passport" class="text-overlay"></div>
     <div id="discipline" class="text-overlay"></div>
-    <div id="current age" class="text-overlay"></div>
     <div id="permanentAddress" class="text-overlay"></div>
     <div id="mobile" class="text-overlay"></div>
     <div id="admissionNo" class="text-overlay"></div>
     <div id="joiningDate" class="text-overlay"></div>
     <div id="standardThisYear" class="text-overlay"></div>
     <div id="standardLastYear" class="text-overlay"></div>
-    <div id="bankDetails" class="text-overlay"></div>
-    <div id="bankHolder" class="text-overlay"></div>
     <div id="bankName" class="text-overlay"></div>
+    <div id="bankHolder" class="text-overlay"></div>
     <div id="accountNo" class="text-overlay"></div>
     <div id="ifsc" class="text-overlay"></div>
     <div id="marks" class="text-overlay"></div>
@@ -196,7 +201,8 @@
     const { jsPDF } = window.jspdf;
 
     function numberToWords(num) {
-      const a = ["","one","two","three","four","five","six","seven","eight","nine","ten","eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen"];
+      const a = ["","one","two","three","four","five","six","seven","eight","nine","ten",
+        "eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen"];
       const b = ["","","twenty","thirty","forty","fifty","sixty","seventy","eighty","ninety"];
       if (num < 20) return a[num];
       const tens = Math.floor(num / 10);
@@ -204,13 +210,32 @@
       return b[tens] + (ones ? " " + a[ones] : "");
     }
 
+    function dayToOrdinal(day) {
+      const ordinals = {
+        1: "first", 2: "second", 3: "third", 4: "fourth", 5: "fifth", 6: "sixth", 7: "seventh",
+        8: "eighth", 9: "ninth", 10: "tenth", 11: "eleventh", 12: "twelfth", 13: "thirteenth",
+        14: "fourteenth", 15: "fifteenth", 16: "sixteenth", 17: "seventeenth", 18: "eighteenth",
+        19: "nineteenth", 20: "twentieth", 21: "twenty first", 22: "twenty second", 23: "twenty third",
+        24: "twenty fourth", 25: "twenty fifth", 26: "twenty sixth", 27: "twenty seventh",
+        28: "twenty eighth", 29: "twenty ninth", 30: "thirtieth", 31: "thirty first"
+      };
+      return ordinals[day] || "";
+    }
+
+    function convertYearToWords(year) {
+      const thousands = Math.floor(year / 1000);
+      const remainder = year % 1000;
+      return `two thousand ${numberToWords(Math.floor(remainder / 100))}${remainder % 100 ? " " + numberToWords(remainder % 100) : ""}`.trim();
+    }
+
     function dateToWords(dateStr) {
       const date = new Date(dateStr);
       if (isNaN(date)) return "";
-      const day = date.getDate();
-      const month = date.toLocaleString('en', { month: 'long' });
+      const day = dayToOrdinal(date.getDate());
+      const month = date.toLocaleString('en', { month: 'long' }).toLowerCase();
       const year = date.getFullYear();
-      return `${numberToWords(day)} of ${month} ${year}`;
+      const yearWords = convertYearToWords(year);
+      return `${day} of ${month} ${yearWords}`;
     }
 
     function calculateAge(dob) {
@@ -227,6 +252,7 @@
     function showPreview() {
       const get = id => document.getElementById(id).value;
       const set = (id, val) => document.getElementById(id).textContent = val || "";
+
       set('ageGroup', get('inputAge'));
       set('participantName', get('inputParticipant'));
       set('fatherName', get('inputFather'));
@@ -248,9 +274,8 @@
       set('joiningDate', get('inputJoining'));
       set('standardThisYear', get('inputStdThis'));
       set('standardLastYear', get('inputStdLast'));
-      set('bankDetails', get('inputBankDetails'));
+      set('bankName', get('inputBankName'));
       set('bankHolder', get('inputHolder'));
-      set('bankName', get('inputBank'));
       set('accountNo', get('inputAccount'));
       set('ifsc', get('inputIfsc'));
       set('marks', get('inputMarks'));
@@ -268,7 +293,7 @@
     }
 
     async function downloadPDF() {
-      const preview = document.getElementById('preview');
+      const preview = document.getElementById('LoadDetails');
       const canvas = await html2canvas(preview, { scale: 2 });
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF('p', 'mm', 'a4');
