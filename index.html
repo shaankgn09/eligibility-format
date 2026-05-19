@@ -224,7 +224,7 @@
   </div>
 
   <div class="note">
-    * First click Submit, then click Download PDF.
+    * Live Preview Enabled
   </div>
 
 </form>
@@ -411,6 +411,23 @@ formInputs.forEach((input, index) => {
       }
 
     }
+
+  });
+
+});
+
+// LIVE PREVIEW WHILE TYPING
+document.querySelectorAll("input").forEach(input => {
+
+  input.addEventListener("input", () => {
+
+    showPreview();
+
+  });
+
+  input.addEventListener("change", () => {
+
+    showPreview();
 
   });
 
