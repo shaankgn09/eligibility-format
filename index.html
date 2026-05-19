@@ -67,7 +67,7 @@ button:hover{
     background-color:#005fa3;
 }
 
-/* MAIN PREVIEW */
+/* PREVIEW */
 
 .preview-wrapper{
 
@@ -89,8 +89,7 @@ button:hover{
 
 }
 
-/* IMPORTANT FIX */
-/* THIS FIXES MOBILE NORMAL VIEW */
+/* MOBILE FIX */
 
 @media screen and (max-width:768px){
 
@@ -117,6 +116,8 @@ button:hover{
     color:black;
     white-space:nowrap;
 }
+
+/* DOB WORD SIZE */
 
 #dobWords{
     font-size:10pt !important;
@@ -402,7 +403,7 @@ function formatDOBWords(d){
 
 }
 
-/* NORMAL DATE */
+/* DATE FORMAT */
 
 function formatNormalDate(d){
 
@@ -512,6 +513,220 @@ function showPreview(){
     }
 
 }
+
+/* DOWNLOAD PDF */
+
+async function downloadPDF(){
+
+    const preview=document.getElementById('LoadDetails');
+
+    const canvas=await html2canvas(preview,{
+        scale:4,
+        useCORS:true
+    });
+
+    const imgData=canvas.toDataURL('image/jpeg',1.0);
+
+    const { jsPDF } = window.jspdf;
+
+    const pdf=new jsPDF('p','mm','a4');
+
+    pdf.addImage(imgData,'JPEG',0,0,210,297);
+
+    // SAVE JSON
+
+    const formData={
+
+        ageGroup:document.getElementById('inputAge').value,
+        participant:document.getElementById('inputParticipant').value,
+        father:document.getElementById('inputFather').value,
+        mother:document.getElementById('inputMother').value,
+        school:document.getElementById('inputSchool').value,
+        address:document.getElementById('inputAddress').value,
+        phone:document.getElementById('inputPhone').value,
+        regNo:document.getElementById('inputRegNo').value,
+        dob:document.getElementById('inputDob').value,
+        aadhaar:document.getElementById('inputAadhaar').value,
+        passport:document.getElementById('inputPassport').value,
+        discipline:document.getElementById('inputDiscipline').value,
+        permAddress:document.getElementById('inputPermAddress').value,
+        mobile:document.getElementById('inputMobile').value,
+        admission:document.getElementById('inputAdmission').value,
+        joining:document.getElementById('inputJoining').value,
+        stdThis:document.getElementById('inputStdThis').value,
+        stdLast:document.getElementById('inputStdLast').value,
+        bankName:document.getElementById('inputBankName').value,
+        holder:document.getElementById('inputHolder').value,
+        account:document.getElementById('inputAccount').value,
+        ifsc:document.getElementById('inputIfsc').value,
+        marks:document.getElementById('inputMarks').value,
+        photo:document.getElementById('photo').src || ""
+
+    };
+
+    pdf.text(
+        "JSON_DATA:" + JSON.stringify(formData),
+        -1000,
+        -1000
+    );
+
+    const participantName=
+    document.getElementById('inputParticipant').value.trim()
+    || 'certificate_form';
+
+    pdf.save(
+        `${participantName.replace(/\s+/g,'_')}.pdf`
+    );
+
+}
+
+/* IMPORT PDF */
+
+document.getElementById('uploadExistingPDF')
+.addEventListener('change', async function(e){
+
+    const file = e.target.files[0];
+
+    if(!file) return;
+
+    try{
+
+        const reader = new FileReader();
+
+        reader.onload = async function(){
+
+            try{
+
+                const uint8Array =
+                new Uint8Array(reader.result);
+
+                let pdfText = "";
+
+                for(let i=0;i<uint8Array.length;i++){
+
+                    pdfText +=
+                    String.fromCharCode(uint8Array[i]);
+
+                }
+
+                const match = pdfText.match(
+                    /JSON_DATA:(\{.*?\})/s
+                );
+
+                if(!match){
+
+                    alert("NO IMPORT DATA FOUND");
+
+                    return;
+
+                }
+
+                const data = JSON.parse(match[1]);
+
+                document.getElementById('inputAge').value =
+                data.ageGroup || "";
+
+                document.getElementById('inputParticipant').value =
+                data.participant || "";
+
+                document.getElementById('inputFather').value =
+                data.father || "";
+
+                document.getElementById('inputMother').value =
+                data.mother || "";
+
+                document.getElementById('inputSchool').value =
+                data.school || "";
+
+                document.getElementById('inputAddress').value =
+                data.address || "";
+
+                document.getElementById('inputPhone').value =
+                data.phone || "";
+
+                document.getElementById('inputRegNo').value =
+                data.regNo || "";
+
+                document.getElementById('inputDob').value =
+                data.dob || "";
+
+                document.getElementById('inputAadhaar').value =
+                data.aadhaar || "";
+
+                document.getElementById('inputPassport').value =
+                data.passport || "";
+
+                document.getElementById('inputDiscipline').value =
+                data.discipline || "";
+
+                document.getElementById('inputPermAddress').value =
+                data.permAddress || "";
+
+                document.getElementById('inputMobile').value =
+                data.mobile || "";
+
+                document.getElementById('inputAdmission').value =
+                data.admission || "";
+
+                document.getElementById('inputJoining').value =
+                data.joining || "";
+
+                document.getElementById('inputStdThis').value =
+                data.stdThis || "";
+
+                document.getElementById('inputStdLast').value =
+                data.stdLast || "";
+
+                document.getElementById('inputBankName').value =
+                data.bankName || "";
+
+                document.getElementById('inputHolder').value =
+                data.holder || "";
+
+                document.getElementById('inputAccount').value =
+                data.account || "";
+
+                document.getElementById('inputIfsc').value =
+                data.ifsc || "";
+
+                document.getElementById('inputMarks').value =
+                data.marks || "";
+
+                if(data.photo){
+
+                    document.getElementById('photo').src =
+                    data.photo;
+
+                    document.getElementById('photo').style.display =
+                    'block';
+
+                }
+
+                showPreview();
+
+                alert("PREVIOUS ELIGIBILITY IMPORTED");
+
+            }catch(err){
+
+                console.error(err);
+
+                alert("IMPORT FAILED");
+
+            }
+
+        };
+
+        reader.readAsArrayBuffer(file);
+
+    }catch(err){
+
+        console.error(err);
+
+        alert("FAILED TO READ PDF");
+
+    }
+
+});
 
 /* LIVE PREVIEW */
 
