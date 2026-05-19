@@ -67,13 +67,41 @@ button:hover{
     background-color:#005fa3;
 }
 
+/* MAIN PREVIEW */
+
+.preview-wrapper{
+
+    width:210mm;
+    max-width:100%;
+    overflow:auto;
+
+}
+
 .preview-container{
+
     position:relative;
     width:210mm;
     height:297mm;
-    border:1px solid #aaa;
-    overflow:hidden;
     background:white;
+    border:1px solid #aaa;
+
+    transform-origin:top left;
+
+}
+
+/* IMPORTANT FIX */
+/* THIS FIXES MOBILE NORMAL VIEW */
+
+@media screen and (max-width:768px){
+
+    .preview-container{
+
+        transform:scale(calc((100vw - 20px) / 794));
+
+        margin-bottom:-190mm;
+
+    }
+
 }
 
 .preview-container img{
@@ -156,87 +184,11 @@ button:hover{
     display:none;
 }
 
-/* MOBILE */
-
-@media screen and (max-width:768px){
-
-    body{
-        padding:8px;
-    }
-
-    form{
-        width:100%;
-        max-width:100%;
-        padding:12px;
-    }
-
-    input{
-        font-size:16px;
-    }
-
-    button{
-        width:100%;
-        padding:12px;
-        font-size:15px;
-    }
-
-    .preview-container{
-        width:100%;
-        max-width:100%;
-        height:auto;
-        aspect-ratio:210 / 297;
-    }
-
-    .text-overlay{
-        transform-origin:top left;
-    }
-
-    #ageGroup,
-    #participantName,
-    #fatherName,
-    #motherName,
-    #schoolName,
-    #address,
-    #schoolPhone,
-    #registrationNo,
-    #dob,
-    #dobWords,
-    #age,
-    #aadhaar,
-    #passport,
-    #discipline,
-    #permanentAddress,
-    #mobile,
-    #admissionNo,
-    #joiningDate,
-    #standardThisYear,
-    #standardLastYear,
-    #bankName,
-    #bankHolder,
-    #accountNo,
-    #ifsc,
-    #marks{
-
-        transform:scale(0.48);
-
-    }
-
-    #photo{
-
-        width:10vw;
-        height:12vw;
-
-    }
-
-}
-
 </style>
 
 </head>
 
 <body>
-
-<h2>This site works best in desktop view for Mobile users</h2>
 
 <h2>Fill Certificate of Eligibility Details</h2>
 
@@ -327,9 +279,11 @@ button:hover{
 
 </form>
 
+<div class="preview-wrapper">
+
 <div class="preview-container" id="LoadDetails">
 
-<img src="wwwww.jpg" alt="Form Image">
+<img src="wwwww.jpg">
 
 <img id="photo">
 
@@ -358,6 +312,8 @@ button:hover{
 <div id="accountNo" class="text-overlay"></div>
 <div id="ifsc" class="text-overlay"></div>
 <div id="marks" class="text-overlay"></div>
+
+</div>
 
 </div>
 
@@ -557,174 +513,13 @@ function showPreview(){
 
 }
 
-/* DOWNLOAD PDF */
-
-async function downloadPDF(){
-
-    const preview=document.getElementById('LoadDetails');
-
-    const canvas=await html2canvas(preview,{
-        scale:4,
-        useCORS:true
-    });
-
-    const imgData=canvas.toDataURL('image/jpeg',1.0);
-
-    const { jsPDF } = window.jspdf;
-
-    const pdf=new jsPDF('p','mm','a4');
-
-    pdf.addImage(imgData,'JPEG',0,0,210,297);
-
-    // HIDDEN JSON
-
-    const formData={
-
-        ageGroup:document.getElementById('inputAge').value,
-        participant:document.getElementById('inputParticipant').value,
-        father:document.getElementById('inputFather').value,
-        mother:document.getElementById('inputMother').value,
-        school:document.getElementById('inputSchool').value,
-        address:document.getElementById('inputAddress').value,
-        phone:document.getElementById('inputPhone').value,
-        regNo:document.getElementById('inputRegNo').value,
-        dob:document.getElementById('inputDob').value,
-        aadhaar:document.getElementById('inputAadhaar').value,
-        passport:document.getElementById('inputPassport').value,
-        discipline:document.getElementById('inputDiscipline').value,
-        permAddress:document.getElementById('inputPermAddress').value,
-        mobile:document.getElementById('inputMobile').value,
-        admission:document.getElementById('inputAdmission').value,
-        joining:document.getElementById('inputJoining').value,
-        stdThis:document.getElementById('inputStdThis').value,
-        stdLast:document.getElementById('inputStdLast').value,
-        bankName:document.getElementById('inputBankName').value,
-        holder:document.getElementById('inputHolder').value,
-        account:document.getElementById('inputAccount').value,
-        ifsc:document.getElementById('inputIfsc').value,
-        marks:document.getElementById('inputMarks').value,
-        photo:document.getElementById('photo').src || ""
-
-    };
-
-    pdf.text(
-        "JSON_DATA:" + JSON.stringify(formData),
-        -1000,
-        -1000
-    );
-
-    const participantName=
-    document.getElementById('inputParticipant').value.trim()
-    || 'certificate_form';
-
-    pdf.save(
-        `${participantName.replace(/\s+/g,'_')}.pdf`
-    );
-
-}
-
-/* IMPORT PREVIOUS PDF */
-
-document.getElementById('uploadExistingPDF')
-.addEventListener('change', async function(e){
-
-    const file=e.target.files[0];
-
-    if(!file) return;
-
-    try{
-
-        const text = await file.text();
-
-        const match = text.match(
-            /JSON_DATA:(.*?)>>/s
-        );
-
-        if(!match){
-
-            alert("NO HIDDEN DATA FOUND");
-
-            return;
-
-        }
-
-        const raw = match[1];
-
-        const jsonMatch = raw.match(/\{.*\}/s);
-
-        if(!jsonMatch){
-
-            alert("INVALID DATA");
-
-            return;
-
-        }
-
-        const data = JSON.parse(jsonMatch[0]);
-
-        document.getElementById('inputAge').value = data.ageGroup || "";
-        document.getElementById('inputParticipant').value = data.participant || "";
-        document.getElementById('inputFather').value = data.father || "";
-        document.getElementById('inputMother').value = data.mother || "";
-        document.getElementById('inputSchool').value = data.school || "";
-        document.getElementById('inputAddress').value = data.address || "";
-        document.getElementById('inputPhone').value = data.phone || "";
-        document.getElementById('inputRegNo').value = data.regNo || "";
-        document.getElementById('inputDob').value = data.dob || "";
-        document.getElementById('inputAadhaar').value = data.aadhaar || "";
-        document.getElementById('inputPassport').value = data.passport || "";
-        document.getElementById('inputDiscipline').value = data.discipline || "";
-        document.getElementById('inputPermAddress').value = data.permAddress || "";
-        document.getElementById('inputMobile').value = data.mobile || "";
-        document.getElementById('inputAdmission').value = data.admission || "";
-        document.getElementById('inputJoining').value = data.joining || "";
-        document.getElementById('inputStdThis').value = data.stdThis || "";
-        document.getElementById('inputStdLast').value = data.stdLast || "";
-        document.getElementById('inputBankName').value = data.bankName || "";
-        document.getElementById('inputHolder').value = data.holder || "";
-        document.getElementById('inputAccount').value = data.account || "";
-        document.getElementById('inputIfsc').value = data.ifsc || "";
-        document.getElementById('inputMarks').value = data.marks || "";
-
-        if(data.photo){
-
-            document.getElementById('photo').src =
-            data.photo;
-
-            document.getElementById('photo').style.display =
-            'block';
-
-        }
-
-        showPreview();
-
-        alert("PREVIOUS ELIGIBILITY IMPORTED");
-
-    }catch(err){
-
-        console.error(err);
-
-        alert("FAILED TO IMPORT PDF");
-
-    }
-
-});
-
 /* LIVE PREVIEW */
 
 document.querySelectorAll("input").forEach(input=>{
 
-    input.addEventListener("input",()=>{
+    input.addEventListener("input",showPreview);
 
-        showPreview();
-
-    });
-
-    input.addEventListener("change",()=>{
-
-        showPreview();
-
-    });
+    input.addEventListener("change",showPreview);
 
 });
 
