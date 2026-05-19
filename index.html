@@ -1,20 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>ZPEO KANGAN</title>
-  <h2>This site works best  in desktop view for Mobile users</h2>
+
   <style>
+
     body {
       font-family: Arial, sans-serif;
-  background: url('background.jpg') no-repeat center center fixed;
-  background-size: cover;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
+      background: url('background.jpg') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      margin: 0;
     }
+
+    h2 {
+      color: white;
+      text-align: center;
+      margin: 10px 0;
+    }
+
     form {
       background: #00BFFF;
       padding: 15px;
@@ -23,29 +35,38 @@
       margin-bottom: 20px;
       width: 350px;
     }
+
     label {
       font-weight: bold;
       font-size: 14px;
       display: block;
       margin-top: 10px;
     }
+
     input {
       width: 100%;
-      padding: 6px;
+      padding: 7px;
       margin-top: 3px;
       border: 1px solid #ccc;
       border-radius: 4px;
+      box-sizing: border-box;
     }
+
     button {
-      margin-top: 8px;
-      padding: 8px 15px;
+      margin-top: 10px;
+      padding: 10px 15px;
       background-color: #0078d7;
       color: white;
       border: none;
       border-radius: 5px;
       cursor: pointer;
+      font-weight: bold;
     }
-    button:hover { background-color: #005fa3; }
+
+    button:hover {
+      background-color: #005fa3;
+    }
+
     .note {
       font-size: 13px;
       color: #333;
@@ -53,6 +74,7 @@
       font-style: italic;
       text-align: center;
     }
+
     .preview-container {
       position: relative;
       width: 210mm;
@@ -61,11 +83,13 @@
       overflow: hidden;
       background: white;
     }
+
     .preview-container img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
+
     .text-overlay {
       position: absolute;
       font-size: 12pt;
@@ -73,6 +97,7 @@
       color: black;
       white-space: nowrap;
     }
+
     #ageGroup { top: 1.78in; left: 1.85in; }
     #participantName { top: 2.24in; left: 4.21in; }
     #fatherName { top: 2.56in; left: 4.2in; }
@@ -82,7 +107,6 @@
     #schoolPhone { top: 3.9in; left: 4.2in; }
     #registrationNo { top: 4.2in; left: 4.2in; }
     #dob { top: 4.7in; left: 4.2in; }
-    #dobWords { top: 5in; left: 3.8in; font-style: italic; font-size: 12pt; }
     #age { top: 6.05in; left: 4.2in; }
     #aadhaar { top: 5.25in; left: 4.2in; }
     #passport { top: 5.52in; left: 4.2in; }
@@ -98,6 +122,7 @@
     #accountNo { top: 8.25in; left: 5in; }
     #ifsc { top: 8.38in; left: 5in; }
     #marks { top: 8.68in; left: 4.2in; }
+
     #photo {
       position: absolute;
       top: 0.77in;
@@ -107,47 +132,157 @@
       object-fit: cover;
       display: none;
     }
+
+    .popup {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #28a745;
+      color: white;
+      padding: 12px 18px;
+      border-radius: 6px;
+      display: none;
+      z-index: 9999;
+      font-weight: bold;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+
+    @media screen and (max-width: 768px) {
+
+      body {
+        padding: 10px;
+      }
+
+      form {
+        width: 95%;
+      }
+
+      .preview-container {
+        width: 100%;
+        height: auto;
+        overflow: auto;
+      }
+
+      .preview-container img {
+        width: 100%;
+        height: auto;
+      }
+
+      .text-overlay {
+        font-size: 8pt;
+      }
+
+      button {
+        width: 100%;
+      }
+
+    }
+
   </style>
+
 </head>
+
 <body>
+
+  <div id="successPopup" class="popup">
+    PDF DOWNLOADED SUCCESSFULLY
+  </div>
+
+  <h2>This site works best in desktop view for Mobile users</h2>
+
   <h2>Fill Certificate of Eligibility Details</h2>
 
   <form id="form">
-    <label>Age Group:</label><input type="text" id="inputAge">
-    <label>Name of Participant:</label><input type="text" id="inputParticipant">
-    <label>Father's Name:</label><input type="text" id="inputFather">
-    <label>Mother's Name:</label><input type="text" id="inputMother">
-    <label>Name of School:</label><input type="text" id="inputSchool">
-    <label>Full Address of School:</label><input type="text" id="inputAddress">
-    <label>School's Phone No:</label><input type="text" id="inputPhone">
-    <label>Last Year Registration No (SGFI):</label><input type="text" id="inputRegNo">
-    <label>Date of Birth:</label><input type="date" id="inputDob">
-    <label>Aadhaar No:</label><input type="text" id="inputAadhaar">
-    <label>Passport No:</label><input type="text" id="inputPassport">
-    <label>Discipline / Game:</label><input type="text" id="inputDiscipline">
-    <label>Permanent Address:</label><input type="text" id="inputPermAddress">
-    <label>Mobile No:</label><input type="text" id="inputMobile">
-    <label>Admission No:</label><input type="text" id="inputAdmission">
-    <label>Date of Joining School:</label><input type="date" id="inputJoining">
-    <label>Standard & Section (This Year):</label><input type="text" id="inputStdThis">
-    <label>Standard Studying (Last Year):</label><input type="text" id="inputStdLast">
-    <label>Bank Name:</label><input type="text" id="inputBankName">
-    <label>Name of Bank Account Holder:</label><input type="text" id="inputHolder">
-    <label>Account No:</label><input type="text" id="inputAccount">
-    <label>IFSC Code:</label><input type="text" id="inputIfsc">
-    <label>Personal Identification Marks:</label><input type="text" id="inputMarks">
-    <label>Upload Photo:</label><input type="file" id="inputPhoto" accept="image/*">
 
-    <div style="display:flex;gap:8px;justify-content:center;">
+    <label>Age Group:</label>
+    <input type="text" id="inputAge">
+
+    <label>Name of Participant:</label>
+    <input type="text" id="inputParticipant">
+
+    <label>Father's Name:</label>
+    <input type="text" id="inputFather">
+
+    <label>Mother's Name:</label>
+    <input type="text" id="inputMother">
+
+    <label>Name of School:</label>
+    <input type="text" id="inputSchool">
+
+    <label>Full Address of School:</label>
+    <input type="text" id="inputAddress">
+
+    <label>School's Phone No:</label>
+    <input type="text" id="inputPhone">
+
+    <label>Last Year Registration No (SGFI):</label>
+    <input type="text" id="inputRegNo">
+
+    <label>Date of Birth:</label>
+    <input type="date" id="inputDob">
+
+    <label>Aadhaar No:</label>
+    <input type="text" id="inputAadhaar">
+
+    <label>Passport No:</label>
+    <input type="text" id="inputPassport">
+
+    <label>Discipline / Game:</label>
+    <input type="text" id="inputDiscipline">
+
+    <label>Permanent Address:</label>
+    <input type="text" id="inputPermAddress">
+
+    <label>Mobile No:</label>
+    <input type="text" id="inputMobile">
+
+    <label>Admission No:</label>
+    <input type="text" id="inputAdmission">
+
+    <label>Date of Joining School:</label>
+    <input type="date" id="inputJoining">
+
+    <label>Standard & Section (This Year):</label>
+    <input type="text" id="inputStdThis">
+
+    <label>Standard Studying (Last Year):</label>
+    <input type="text" id="inputStdLast">
+
+    <label>Bank Name:</label>
+    <input type="text" id="inputBankName">
+
+    <label>Name of Bank Account Holder:</label>
+    <input type="text" id="inputHolder">
+
+    <label>Account No:</label>
+    <input type="text" id="inputAccount">
+
+    <label>IFSC Code:</label>
+    <input type="text" id="inputIfsc">
+
+    <label>Personal Identification Marks:</label>
+    <input type="text" id="inputMarks">
+
+    <label>Upload Photo:</label>
+    <input type="file" id="inputPhoto" accept="image/*">
+
+    <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
       <button type="button" onclick="showPreview()">Submit</button>
       <button type="button" onclick="downloadPDF()">Download PDF</button>
     </div>
-    <div class="note">* First click Submit, then click Download PDF.</div>
+
+    <div class="note">
+      * Live preview enabled
+    </div>
+
   </form>
 
   <div class="preview-container" id="LoadDetails">
+
     <img src="wwwww.jpg" alt="Form Image">
+
     <img id="photo">
+
     <div id="ageGroup" class="text-overlay"></div>
     <div id="participantName" class="text-overlay"></div>
     <div id="fatherName" class="text-overlay"></div>
@@ -157,7 +292,6 @@
     <div id="schoolPhone" class="text-overlay"></div>
     <div id="registrationNo" class="text-overlay"></div>
     <div id="dob" class="text-overlay"></div>
-    <div id="dobWords" class="text-overlay"></div>
     <div id="age" class="text-overlay"></div>
     <div id="aadhaar" class="text-overlay"></div>
     <div id="passport" class="text-overlay"></div>
@@ -173,136 +307,199 @@
     <div id="accountNo" class="text-overlay"></div>
     <div id="ifsc" class="text-overlay"></div>
     <div id="marks" class="text-overlay"></div>
+
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-<script>
-  const { jsPDF } = window.jspdf;
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-  function numberToWords(num) {
-    const a = ["","one","two","three","four","five","six","seven","eight","nine","ten",
-      "eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen"];
-    const b = ["","","twenty","thirty","forty","fifty","sixty","seventy","eighty","ninety"];
-    if (num < 20) return a[num];
-    const tens = Math.floor(num / 10);
-    const ones = num % 10;
-    return b[tens] + (ones ? " " + a[ones] : "");
-  }
+  <script>
 
-  function dayToOrdinal(day) {
-    const ordinals = {
-      1: "first", 2: "second", 3: "third", 4: "fourth", 5: "fifth", 6: "sixth", 7: "seventh",
-      8: "eighth", 9: "ninth", 10: "tenth", 11: "eleventh", 12: "twelfth", 13: "thirteenth",
-      14: "fourteenth", 15: "fifteenth", 16: "sixteenth", 17: "seventeenth", 18: "eighteenth",
-      19: "nineteenth", 20: "twentieth", 21: "twenty first", 22: "twenty second", 23: "twenty third",
-      24: "twenty fourth", 25: "twenty fifth", 26: "twenty sixth", 27: "twenty seventh",
-      28: "twenty eighth", 29: "twenty ninth", 30: "thirtieth", 31: "thirty first"
-    };
-    return ordinals[day] || "";
-  }
+    const { jsPDF } = window.jspdf;
 
-  // ✅ Natural year format (e.g., "two thousand twenty-five")
-  function convertYearToWords(year) {
-    if (year < 2000 || year > 2099) return year.toString();
-    const thousands = "two thousand";
-    const remainder = year - 2000;
-    if (remainder === 0) return thousands;
-    if (remainder < 20) return `${thousands} ${numberToWords(remainder)}`;
-    const tens = Math.floor(remainder / 10) * 10;
-    const ones = remainder % 10;
-    return `${thousands} ${numberToWords(tens)}${ones ? " " + numberToWords(ones) : ""}`;
-  }
+    // AUTO CAPITAL LETTERS
+    document.querySelectorAll("input[type='text']").forEach(input => {
 
-  function dateToWords(dateStr) {
-    const date = new Date(dateStr);
-    if (isNaN(date)) return "";
-    const day = dayToOrdinal(date.getDate());
-    const month = date.toLocaleString('en', { month: 'long' }).toLowerCase();
-    const yearWords = convertYearToWords(date.getFullYear());
-    return `${day} of ${month} ${yearWords}`;
-  }
+      input.addEventListener("input", function () {
 
-  function formatDate(d) {
-    if (!d) return "";
-    const date = new Date(d);
-    const dd = String(date.getDate()).padStart(2, '0');
-    const mm = String(date.getMonth() + 1).padStart(2, '0');
-    const yyyy = date.getFullYear();
-    return `${dd}.${mm}.${yyyy}`;
-  }
+        this.value = this.value.toUpperCase();
 
-  function calculateAge(dob) {
-    const birthDate = new Date(dob);
-    const refDate = new Date("2025-12-31");
-    let years = refDate.getFullYear() - birthDate.getFullYear();
-    let months = refDate.getMonth() - birthDate.getMonth();
-    let days = refDate.getDate() - birthDate.getDate();
-    if (days < 0) { months--; days += 30; }
-    if (months < 0) { years--; months += 12; }
-    return `${years} years ${months} months ${days} days`;
-  }
+      });
 
-  function showPreview() {
-    const get = id => document.getElementById(id).value;
-    const set = (id, val) => document.getElementById(id).textContent = val || "";
+    });
 
-    set('ageGroup', get('inputAge'));
-    set('participantName', get('inputParticipant'));
-    set('fatherName', get('inputFather'));
-    set('motherName', get('inputMother'));
-    set('schoolName', get('inputSchool'));
-    set('address', get('inputAddress'));
-    set('schoolPhone', get('inputPhone'));
-    set('registrationNo', get('inputRegNo'));
+    // LIVE PREVIEW
+    document.querySelectorAll("input").forEach(input => {
 
-    const dob = get('inputDob');
-    set('dob', formatDate(dob));
-    set('dobWords', dateToWords(dob));
-    set('age', calculateAge(dob));
+      input.addEventListener("input", () => {
 
-    set('aadhaar', get('inputAadhaar'));
-    set('passport', get('inputPassport'));
-    set('discipline', get('inputDiscipline'));
-    set('permanentAddress', get('inputPermAddress'));
-    set('mobile', get('inputMobile'));
-    set('admissionNo', get('inputAdmission'));
-    set('joiningDate', formatDate(get('inputJoining')));
-    set('standardThisYear', get('inputStdThis'));
-    set('standardLastYear', get('inputStdLast'));
-    set('bankName', get('inputBankName'));
-    set('bankHolder', get('inputHolder'));
-    set('accountNo', get('inputAccount'));
-    set('ifsc', get('inputIfsc'));
-    set('marks', get('inputMarks'));
+        showPreview();
 
-    const photoInput = document.getElementById('inputPhoto');
-    const photo = document.getElementById('photo');
-    if (photoInput.files && photoInput.files[0]) {
-      const reader = new FileReader();
-      reader.onload = e => {
-        photo.src = e.target.result;
-        photo.style.display = 'block';
-      };
-      reader.readAsDataURL(photoInput.files[0]);
+      });
+
+    });
+
+    // AUTO FOCUS NEXT FIELD
+    const formInputs = document.querySelectorAll("input");
+
+    formInputs.forEach((input, index) => {
+
+      input.addEventListener("keydown", function(e) {
+
+        if (e.key === "Enter") {
+
+          e.preventDefault();
+
+          const nextInput = formInputs[index + 1];
+
+          if (nextInput) {
+            nextInput.focus();
+          }
+
+        }
+
+      });
+
+    });
+
+    // DATE FORMAT
+    function formatDate(d) {
+
+      if (!d) return "";
+
+      const date = new Date(d);
+
+      const dd = String(date.getDate()).padStart(2, '0');
+      const mm = String(date.getMonth() + 1).padStart(2, '0');
+      const yyyy = date.getFullYear();
+
+      return `${dd}.${mm}.${yyyy}`;
     }
-  }
 
-  async function downloadPDF() {
-    const preview = document.getElementById('LoadDetails');
-    const canvas = await html2canvas(preview, { scale: 4, useCORS: true });
-    const imgData = canvas.toDataURL('image/jpeg', 1.0);
-    const pdf = new jsPDF('p', 'mm', 'a4');
-    pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297);
+    // AGE CALCULATION
+    function calculateAge(dob) {
 
-    const participantName = document.getElementById('inputParticipant').value.trim() || 'certificate_form';
-    pdf.save(`${participantName.replace(/\s+/g, '_')}.pdf`);
-  }
-</script>
+      const birthDate = new Date(dob);
+
+      const refDate = new Date("2026-12-31");
+
+      let years = refDate.getFullYear() - birthDate.getFullYear();
+      let months = refDate.getMonth() - birthDate.getMonth();
+      let days = refDate.getDate() - birthDate.getDate();
+
+      if (days < 0) {
+        months--;
+        days += 30;
+      }
+
+      if (months < 0) {
+        years--;
+        months += 12;
+      }
+
+      return `${years} YEARS ${months} MONTHS ${days} DAYS`;
+    }
+
+    // SHOW PREVIEW
+    function showPreview() {
+
+      const get = id => document.getElementById(id).value;
+
+      const set = (id, val) =>
+        document.getElementById(id).textContent = val || "";
+
+      set('ageGroup', get('inputAge'));
+      set('participantName', get('inputParticipant'));
+      set('fatherName', get('inputFather'));
+      set('motherName', get('inputMother'));
+      set('schoolName', get('inputSchool'));
+      set('address', get('inputAddress'));
+      set('schoolPhone', get('inputPhone'));
+      set('registrationNo', get('inputRegNo'));
+
+      const dob = get('inputDob');
+
+      set('dob', formatDate(dob));
+      set('age', calculateAge(dob));
+
+      set('aadhaar', get('inputAadhaar'));
+      set('passport', get('inputPassport'));
+      set('discipline', get('inputDiscipline'));
+      set('permanentAddress', get('inputPermAddress'));
+      set('mobile', get('inputMobile'));
+      set('admissionNo', get('inputAdmission'));
+      set('joiningDate', formatDate(get('inputJoining')));
+      set('standardThisYear', get('inputStdThis'));
+      set('standardLastYear', get('inputStdLast'));
+      set('bankName', get('inputBankName'));
+      set('bankHolder', get('inputHolder'));
+      set('accountNo', get('inputAccount'));
+      set('ifsc', get('inputIfsc'));
+      set('marks', get('inputMarks'));
+
+      const photoInput = document.getElementById('inputPhoto');
+      const photo = document.getElementById('photo');
+
+      if (photoInput.files && photoInput.files[0]) {
+
+        const reader = new FileReader();
+
+        reader.onload = e => {
+
+          photo.src = e.target.result;
+          photo.style.display = 'block';
+
+        };
+
+        reader.readAsDataURL(photoInput.files[0]);
+
+      }
+
+    }
+
+    // DOWNLOAD PDF
+    async function downloadPDF() {
+
+      const preview = document.getElementById('LoadDetails');
+
+      const canvas = await html2canvas(preview, {
+        scale: 4,
+        useCORS: true
+      });
+
+      const imgData = canvas.toDataURL('image/jpeg', 1.0);
+
+      const pdf = new jsPDF('p', 'mm', 'a4');
+
+      pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297);
+
+      const participantName =
+        document.getElementById('inputParticipant').value.trim()
+        || 'certificate_form';
+
+      pdf.save(`${participantName.replace(/\s+/g, '_')}.pdf`);
+
+      showSuccessPopup();
+
+    }
+
+    // SUCCESS POPUP
+    function showSuccessPopup() {
+
+      const popup = document.getElementById("successPopup");
+
+      popup.style.display = "block";
+
+      setTimeout(() => {
+
+        popup.style.display = "none";
+
+      }, 3000);
+
+    }
+
+  </script>
 
 </body>
 </html>
-
-
-
