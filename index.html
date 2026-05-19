@@ -8,7 +8,6 @@
 
 <title>ZPEO KANGAN</title>
 
-    
 <style>
 
 body{
@@ -20,6 +19,7 @@ body{
     align-items:center;
     padding:20px;
     margin:0;
+    overflow-x:hidden;
 }
 
 h2{
@@ -34,6 +34,7 @@ form{
     box-shadow:0 0 5px rgba(0,0,0,0.2);
     margin-bottom:20px;
     width:350px;
+    box-sizing:border-box;
 }
 
 label{
@@ -64,14 +65,6 @@ button{
 
 button:hover{
     background-color:#005fa3;
-}
-
-.note{
-    font-size:13px;
-    color:#333;
-    margin-top:5px;
-    font-style:italic;
-    text-align:center;
 }
 
 .preview-container{
@@ -171,28 +164,78 @@ button:hover{
     display:none;
 }
 
+/* MOBILE OPTIMIZATION */
+
 @media screen and (max-width:768px){
 
     body{
-        padding:5px;
+        padding:8px;
     }
 
     form{
         width:100%;
+        max-width:100%;
+        padding:12px;
+    }
+
+    input{
+        font-size:16px;
+    }
+
+    button{
+        width:100%;
+        padding:12px;
+        font-size:15px;
     }
 
     .preview-container{
         width:100%;
+        max-width:100%;
         height:auto;
         aspect-ratio:210 / 297;
+        overflow:hidden;
     }
 
     .text-overlay{
-        font-size:1.8vw;
+        transform-origin:top left;
+        white-space:nowrap;
     }
 
-    #dobWords{
-        font-size:1.4vw !important;
+    #ageGroup,
+    #participantName,
+    #fatherName,
+    #motherName,
+    #schoolName,
+    #address,
+    #schoolPhone,
+    #registrationNo,
+    #dob,
+    #dobWords,
+    #age,
+    #aadhaar,
+    #passport,
+    #discipline,
+    #permanentAddress,
+    #mobile,
+    #admissionNo,
+    #joiningDate,
+    #standardThisYear,
+    #standardLastYear,
+    #bankName,
+    #bankHolder,
+    #accountNo,
+    #ifsc,
+    #marks{
+
+        transform:scale(0.48);
+
+    }
+
+    #photo{
+
+        width:10vw;
+        height:12vw;
+
     }
 
 }
@@ -203,7 +246,7 @@ button:hover{
 
 <body>
 
-<h2>This site works best in desktop view mode for Mobile users. enable it now </h2>
+<h2>This site works best in desktop view for Mobile users</h2>
 
 <h2>Fill Certificate of Eligibility Details</h2>
 
@@ -284,16 +327,12 @@ button:hover{
 <label>Upload Photo:</label>
 <input type="file" id="inputPhoto" accept="image/*">
 
-<div style="display:flex;gap:8px;justify-content:center;">
+<div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
 
 <button type="button" onclick="showPreview()">Submit</button>
 
 <button type="button" onclick="downloadPDF()">Download PDF</button>
 
-</div>
-
-<div class="note">
-* enjoy
 </div>
 
 </form>
@@ -305,53 +344,29 @@ button:hover{
 <img id="photo">
 
 <div id="ageGroup" class="text-overlay"></div>
-
 <div id="participantName" class="text-overlay"></div>
-
 <div id="fatherName" class="text-overlay"></div>
-
 <div id="motherName" class="text-overlay"></div>
-
 <div id="schoolName" class="text-overlay"></div>
-
 <div id="address" class="text-overlay"></div>
-
 <div id="schoolPhone" class="text-overlay"></div>
-
 <div id="registrationNo" class="text-overlay"></div>
-
 <div id="dob" class="text-overlay"></div>
-
 <div id="dobWords" class="text-overlay"></div>
-
 <div id="age" class="text-overlay"></div>
-
 <div id="aadhaar" class="text-overlay"></div>
-
 <div id="passport" class="text-overlay"></div>
-
 <div id="discipline" class="text-overlay"></div>
-
 <div id="permanentAddress" class="text-overlay"></div>
-
 <div id="mobile" class="text-overlay"></div>
-
 <div id="admissionNo" class="text-overlay"></div>
-
 <div id="joiningDate" class="text-overlay"></div>
-
 <div id="standardThisYear" class="text-overlay"></div>
-
 <div id="standardLastYear" class="text-overlay"></div>
-
 <div id="bankName" class="text-overlay"></div>
-
 <div id="bankHolder" class="text-overlay"></div>
-
 <div id="accountNo" class="text-overlay"></div>
-
 <div id="ifsc" class="text-overlay"></div>
-
 <div id="marks" class="text-overlay"></div>
 
 </div>
@@ -360,11 +375,7 @@ button:hover{
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-<script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
-
 <script>
-
-const { jsPDF } = window.jspdf;
 
 /* DOB WORDS */
 
@@ -387,31 +398,68 @@ function formatDOBWords(d){
 
     const dayWords = [
         "",
-        "FIRST","SECOND","THIRD","FOURTH","FIFTH","SIXTH",
-        "SEVENTH","EIGHTH","NINTH","TENTH","ELEVENTH",
-        "TWELFTH","THIRTEENTH","FOURTEENTH","FIFTEENTH",
-        "SIXTEENTH","SEVENTEENTH","EIGHTEENTH","NINETEENTH",
-        "TWENTIETH","TWENTY FIRST","TWENTY SECOND",
-        "TWENTY THIRD","TWENTY FOURTH","TWENTY FIFTH",
-        "TWENTY SIXTH","TWENTY SEVENTH","TWENTY EIGHTH",
-        "TWENTY NINTH","THIRTIETH","THIRTY FIRST"
+        "FIRST",
+        "SECOND",
+        "THIRD",
+        "FOURTH",
+        "FIFTH",
+        "SIXTH",
+        "SEVENTH",
+        "EIGHTH",
+        "NINTH",
+        "TENTH",
+        "ELEVENTH",
+        "TWELFTH",
+        "THIRTEENTH",
+        "FOURTEENTH",
+        "FIFTEENTH",
+        "SIXTEENTH",
+        "SEVENTEENTH",
+        "EIGHTEENTH",
+        "NINETEENTH",
+        "TWENTIETH",
+        "TWENTY FIRST",
+        "TWENTY SECOND",
+        "TWENTY THIRD",
+        "TWENTY FOURTH",
+        "TWENTY FIFTH",
+        "TWENTY SIXTH",
+        "TWENTY SEVENTH",
+        "TWENTY EIGHTH",
+        "TWENTY NINTH",
+        "THIRTIETH",
+        "THIRTY FIRST"
     ];
 
     function numberToWords(num){
 
         const ones = [
-            "","ONE","TWO","THREE","FOUR","FIVE","SIX",
-            "SEVEN","EIGHT","NINE","TEN","ELEVEN","TWELVE",
-            "THIRTEEN","FOURTEEN","FIFTEEN","SIXTEEN",
-            "SEVENTEEN","EIGHTEEN","NINETEEN"
+            "",
+            "ONE","TWO","THREE","FOUR","FIVE",
+            "SIX","SEVEN","EIGHT","NINE","TEN",
+            "ELEVEN","TWELVE","THIRTEEN","FOURTEEN",
+            "FIFTEEN","SIXTEEN","SEVENTEEN",
+            "EIGHTEEN","NINETEEN"
         ];
 
         const tens = [
-            "","","TWENTY","THIRTY","FORTY","FIFTY",
-            "SIXTY","SEVENTY","EIGHTY","NINETY"
+            "",
+            "",
+            "TWENTY",
+            "THIRTY",
+            "FORTY",
+            "FIFTY",
+            "SIXTY",
+            "SEVENTY",
+            "EIGHTY",
+            "NINETY"
         ];
 
-        if(num < 20) return ones[num];
+        if(num < 20){
+
+            return ones[num];
+
+        }
 
         if(num < 100){
 
@@ -506,56 +554,40 @@ function showPreview(){
     document.getElementById(id).textContent=val||"";
 
     set('ageGroup',get('inputAge'));
-
     set('participantName',get('inputParticipant'));
-
     set('fatherName',get('inputFather'));
-
     set('motherName',get('inputMother'));
-
     set('schoolName',get('inputSchool'));
-
     set('address',get('inputAddress'));
-
     set('schoolPhone',get('inputPhone'));
-
     set('registrationNo',get('inputRegNo'));
 
     const dob=get('inputDob');
 
     set('dob', formatNormalDate(dob));
 
+    /* DOB WORDS */
+
     set('dobWords', formatDOBWords(dob));
 
     set('age',calculateAge(dob));
 
     set('aadhaar',get('inputAadhaar'));
-
     set('passport',get('inputPassport'));
-
     set('discipline',get('inputDiscipline'));
-
     set('permanentAddress',get('inputPermAddress'));
-
     set('mobile',get('inputMobile'));
-
     set('admissionNo',get('inputAdmission'));
 
     set('joiningDate',
     formatNormalDate(get('inputJoining')));
 
     set('standardThisYear',get('inputStdThis'));
-
     set('standardLastYear',get('inputStdLast'));
-
     set('bankName',get('inputBankName'));
-
     set('bankHolder',get('inputHolder'));
-
     set('accountNo',get('inputAccount'));
-
     set('ifsc',get('inputIfsc'));
-
     set('marks',get('inputMarks'));
 
     const photoInput=document.getElementById('inputPhoto');
@@ -569,7 +601,6 @@ function showPreview(){
         reader.onload=e=>{
 
             photo.src=e.target.result;
-
             photo.style.display='block';
 
         };
@@ -580,256 +611,34 @@ function showPreview(){
 
 }
 
-/* DOWNLOAD PDF WITH HIDDEN JSON */
+/* DOWNLOAD PDF */
 
 async function downloadPDF(){
 
-    try{
+    const preview=document.getElementById('LoadDetails');
 
-        const preview=document.getElementById('LoadDetails');
+    const canvas=await html2canvas(preview,{
+        scale:4,
+        useCORS:true
+    });
 
-        const canvas=await html2canvas(preview,{
-            scale:4,
-            useCORS:true
-        });
+    const imgData=canvas.toDataURL('image/jpeg',1.0);
 
-        const imgData=canvas.toDataURL('image/jpeg',1.0);
+    const { jsPDF } = window.jspdf;
 
-        const pdf=new jsPDF('p','mm','a4');
+    const pdf=new jsPDF('p','mm','a4');
 
-        pdf.addImage(imgData,'JPEG',0,0,210,297);
+    pdf.addImage(imgData,'JPEG',0,0,210,297);
 
-        // FORM DATA
+    const participantName=
+    document.getElementById('inputParticipant').value.trim()
+    || 'certificate_form';
 
-        const formData={
-
-            ageGroup:document.getElementById('inputAge').value,
-
-            participant:document.getElementById('inputParticipant').value,
-
-            father:document.getElementById('inputFather').value,
-
-            mother:document.getElementById('inputMother').value,
-
-            school:document.getElementById('inputSchool').value,
-
-            address:document.getElementById('inputAddress').value,
-
-            phone:document.getElementById('inputPhone').value,
-
-            regNo:document.getElementById('inputRegNo').value,
-
-            dob:document.getElementById('inputDob').value,
-
-            aadhaar:document.getElementById('inputAadhaar').value,
-
-            passport:document.getElementById('inputPassport').value,
-
-            discipline:document.getElementById('inputDiscipline').value,
-
-            permAddress:document.getElementById('inputPermAddress').value,
-
-            mobile:document.getElementById('inputMobile').value,
-
-            admission:document.getElementById('inputAdmission').value,
-
-            joining:document.getElementById('inputJoining').value,
-
-            stdThis:document.getElementById('inputStdThis').value,
-
-            stdLast:document.getElementById('inputStdLast').value,
-
-            bankName:document.getElementById('inputBankName').value,
-
-            holder:document.getElementById('inputHolder').value,
-
-            account:document.getElementById('inputAccount').value,
-
-            ifsc:document.getElementById('inputIfsc').value,
-
-            marks:document.getElementById('inputMarks').value,
-
-            photo:document.getElementById('photo').src || ""
-
-        };
-
-        // CONVERT PDF
-
-        const pdfBlob = pdf.output('blob');
-
-        const arrayBuffer = await pdfBlob.arrayBuffer();
-
-        // LOAD PDF LIB
-
-        const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
-
-        // HIDDEN JSON
-
-        pdfDoc.setSubject(JSON.stringify(formData));
-
-        const finalPdfBytes = await pdfDoc.save();
-
-        // DOWNLOAD
-
-        const blob = new Blob(
-            [finalPdfBytes],
-            {type:'application/pdf'}
-        );
-
-        const participantName=
-        document.getElementById('inputParticipant').value.trim()
-        || 'certificate_form';
-
-        const link=document.createElement('a');
-
-        link.href=URL.createObjectURL(blob);
-
-        link.download=
-        `${participantName.replace(/\s+/g,'_')}.pdf`;
-
-        document.body.appendChild(link);
-
-        link.click();
-
-        document.body.removeChild(link);
-
-        URL.revokeObjectURL(link.href);
-
-        alert("PDF DOWNLOADED SUCCESSFULLY");
-
-    }catch(err){
-
-        console.error(err);
-
-        alert("PDF DOWNLOAD FAILED");
-
-    }
+    pdf.save(
+        `${participantName.replace(/\s+/g,'_')}.pdf`
+    );
 
 }
-
-/* IMPORT PREVIOUS PDF */
-
-document.getElementById('uploadExistingPDF')
-.addEventListener('change', async function(e){
-
-    const file=e.target.files[0];
-
-    if(!file) return;
-
-    try{
-
-        const arrayBuffer=await file.arrayBuffer();
-
-        const pdfDoc=await PDFLib.PDFDocument.load(arrayBuffer);
-
-        const subject=pdfDoc.getSubject();
-
-        if(!subject){
-
-            alert(" no data copied ");
-
-            return;
-
-        }
-
-        const data=JSON.parse(subject);
-
-        // RESTORE
-
-        document.getElementById('inputAge').value =
-        data.ageGroup || "";
-
-        document.getElementById('inputParticipant').value =
-        data.participant || "";
-
-        document.getElementById('inputFather').value =
-        data.father || "";
-
-        document.getElementById('inputMother').value =
-        data.mother || "";
-
-        document.getElementById('inputSchool').value =
-        data.school || "";
-
-        document.getElementById('inputAddress').value =
-        data.address || "";
-
-        document.getElementById('inputPhone').value =
-        data.phone || "";
-
-        document.getElementById('inputRegNo').value =
-        data.regNo || "";
-
-        document.getElementById('inputDob').value =
-        data.dob || "";
-
-        document.getElementById('inputAadhaar').value =
-        data.aadhaar || "";
-
-        document.getElementById('inputPassport').value =
-        data.passport || "";
-
-        document.getElementById('inputDiscipline').value =
-        data.discipline || "";
-
-        document.getElementById('inputPermAddress').value =
-        data.permAddress || "";
-
-        document.getElementById('inputMobile').value =
-        data.mobile || "";
-
-        document.getElementById('inputAdmission').value =
-        data.admission || "";
-
-        document.getElementById('inputJoining').value =
-        data.joining || "";
-
-        document.getElementById('inputStdThis').value =
-        data.stdThis || "";
-
-        document.getElementById('inputStdLast').value =
-        data.stdLast || "";
-
-        document.getElementById('inputBankName').value =
-        data.bankName || "";
-
-        document.getElementById('inputHolder').value =
-        data.holder || "";
-
-        document.getElementById('inputAccount').value =
-        data.account || "";
-
-        document.getElementById('inputIfsc').value =
-        data.ifsc || "";
-
-        document.getElementById('inputMarks').value =
-        data.marks || "";
-
-        // PHOTO
-
-        if(data.photo){
-
-            document.getElementById('photo').src =
-            data.photo;
-
-            document.getElementById('photo').style.display =
-            'block';
-
-        }
-
-        showPreview();
-
-        alert("PREVIOUS ELIGIBILITY IMPORTED");
-
-    }catch(err){
-
-        console.error(err);
-
-        alert("FAILED TO IMPORT PDF");
-
-    }
-
-});
 
 /* AUTO CAPITAL */
 
