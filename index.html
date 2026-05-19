@@ -90,8 +90,6 @@ button:hover{
     white-space:nowrap;
 }
 
-/* DOB WORD FONT */
-
 #dobWords{
     font-size:10pt !important;
 }
@@ -114,15 +112,9 @@ button:hover{
 
 #registrationNo { top: 4.2in; left: 4.2in; }
 
-#dob {
-    top: 4.52in;
-    left: 4.2in;
-}
+#dob { top: 4.52in; left: 4.2in; }
 
-#dobWords {
-    top: 4.75in;
-    left: 4.2in;
-}
+#dobWords { top: 4.75in; left: 4.2in; }
 
 #age { top: 6.05in; left: 4.2in; }
 
@@ -164,7 +156,7 @@ button:hover{
     display:none;
 }
 
-/* MOBILE OPTIMIZATION */
+/* MOBILE */
 
 @media screen and (max-width:768px){
 
@@ -193,12 +185,10 @@ button:hover{
         max-width:100%;
         height:auto;
         aspect-ratio:210 / 297;
-        overflow:hidden;
     }
 
     .text-overlay{
         transform-origin:top left;
-        white-space:nowrap;
     }
 
     #ageGroup,
@@ -398,37 +388,15 @@ function formatDOBWords(d){
 
     const dayWords = [
         "",
-        "FIRST",
-        "SECOND",
-        "THIRD",
-        "FOURTH",
-        "FIFTH",
-        "SIXTH",
-        "SEVENTH",
-        "EIGHTH",
-        "NINTH",
-        "TENTH",
-        "ELEVENTH",
-        "TWELFTH",
-        "THIRTEENTH",
-        "FOURTEENTH",
-        "FIFTEENTH",
-        "SIXTEENTH",
-        "SEVENTEENTH",
-        "EIGHTEENTH",
-        "NINETEENTH",
-        "TWENTIETH",
-        "TWENTY FIRST",
-        "TWENTY SECOND",
-        "TWENTY THIRD",
-        "TWENTY FOURTH",
-        "TWENTY FIFTH",
-        "TWENTY SIXTH",
-        "TWENTY SEVENTH",
-        "TWENTY EIGHTH",
-        "TWENTY NINTH",
-        "THIRTIETH",
-        "THIRTY FIRST"
+        "FIRST","SECOND","THIRD","FOURTH","FIFTH",
+        "SIXTH","SEVENTH","EIGHTH","NINTH","TENTH",
+        "ELEVENTH","TWELFTH","THIRTEENTH","FOURTEENTH",
+        "FIFTEENTH","SIXTEENTH","SEVENTEENTH",
+        "EIGHTEENTH","NINETEENTH","TWENTIETH",
+        "TWENTY FIRST","TWENTY SECOND","TWENTY THIRD",
+        "TWENTY FOURTH","TWENTY FIFTH","TWENTY SIXTH",
+        "TWENTY SEVENTH","TWENTY EIGHTH",
+        "TWENTY NINTH","THIRTIETH","THIRTY FIRST"
     ];
 
     function numberToWords(num){
@@ -445,43 +413,29 @@ function formatDOBWords(d){
         const tens = [
             "",
             "",
-            "TWENTY",
-            "THIRTY",
-            "FORTY",
-            "FIFTY",
-            "SIXTY",
-            "SEVENTY",
-            "EIGHTY",
-            "NINETY"
+            "TWENTY","THIRTY","FORTY","FIFTY",
+            "SIXTY","SEVENTY","EIGHTY","NINETY"
         ];
 
         if(num < 20){
-
             return ones[num];
-
         }
 
         if(num < 100){
-
             return tens[Math.floor(num/10)] +
             (num%10 ? " " + ones[num%10] : "");
-
         }
 
         if(num < 1000){
-
             return ones[Math.floor(num/100)] +
             " HUNDRED " +
             numberToWords(num%100);
-
         }
 
         if(num < 10000){
-
             return ones[Math.floor(num/1000)] +
             " THOUSAND " +
             numberToWords(num%1000);
-
         }
 
         return num;
@@ -527,17 +481,13 @@ function calculateAge(dob){
     let days = refDate.getDate() - birthDate.getDate();
 
     if(days < 0){
-
         months--;
         days += 30;
-
     }
 
     if(months < 0){
-
         years--;
         months += 12;
-
     }
 
     return `${years} YEARS ${months} MONTHS ${days} DAYS`;
@@ -565,11 +515,7 @@ function showPreview(){
     const dob=get('inputDob');
 
     set('dob', formatNormalDate(dob));
-
-    /* DOB WORDS */
-
     set('dobWords', formatDOBWords(dob));
-
     set('age',calculateAge(dob));
 
     set('aadhaar',get('inputAadhaar'));
@@ -630,6 +576,43 @@ async function downloadPDF(){
 
     pdf.addImage(imgData,'JPEG',0,0,210,297);
 
+    // HIDDEN JSON
+
+    const formData={
+
+        ageGroup:document.getElementById('inputAge').value,
+        participant:document.getElementById('inputParticipant').value,
+        father:document.getElementById('inputFather').value,
+        mother:document.getElementById('inputMother').value,
+        school:document.getElementById('inputSchool').value,
+        address:document.getElementById('inputAddress').value,
+        phone:document.getElementById('inputPhone').value,
+        regNo:document.getElementById('inputRegNo').value,
+        dob:document.getElementById('inputDob').value,
+        aadhaar:document.getElementById('inputAadhaar').value,
+        passport:document.getElementById('inputPassport').value,
+        discipline:document.getElementById('inputDiscipline').value,
+        permAddress:document.getElementById('inputPermAddress').value,
+        mobile:document.getElementById('inputMobile').value,
+        admission:document.getElementById('inputAdmission').value,
+        joining:document.getElementById('inputJoining').value,
+        stdThis:document.getElementById('inputStdThis').value,
+        stdLast:document.getElementById('inputStdLast').value,
+        bankName:document.getElementById('inputBankName').value,
+        holder:document.getElementById('inputHolder').value,
+        account:document.getElementById('inputAccount').value,
+        ifsc:document.getElementById('inputIfsc').value,
+        marks:document.getElementById('inputMarks').value,
+        photo:document.getElementById('photo').src || ""
+
+    };
+
+    pdf.text(
+        "JSON_DATA:" + JSON.stringify(formData),
+        -1000,
+        -1000
+    );
+
     const participantName=
     document.getElementById('inputParticipant').value.trim()
     || 'certificate_form';
@@ -639,6 +622,111 @@ async function downloadPDF(){
     );
 
 }
+
+/* IMPORT PREVIOUS PDF */
+
+document.getElementById('uploadExistingPDF')
+.addEventListener('change', async function(e){
+
+    const file=e.target.files[0];
+
+    if(!file) return;
+
+    try{
+
+        const text = await file.text();
+
+        const match = text.match(
+            /JSON_DATA:(.*?)>>/s
+        );
+
+        if(!match){
+
+            alert("NO HIDDEN DATA FOUND");
+
+            return;
+
+        }
+
+        const raw = match[1];
+
+        const jsonMatch = raw.match(/\{.*\}/s);
+
+        if(!jsonMatch){
+
+            alert("INVALID DATA");
+
+            return;
+
+        }
+
+        const data = JSON.parse(jsonMatch[0]);
+
+        document.getElementById('inputAge').value = data.ageGroup || "";
+        document.getElementById('inputParticipant').value = data.participant || "";
+        document.getElementById('inputFather').value = data.father || "";
+        document.getElementById('inputMother').value = data.mother || "";
+        document.getElementById('inputSchool').value = data.school || "";
+        document.getElementById('inputAddress').value = data.address || "";
+        document.getElementById('inputPhone').value = data.phone || "";
+        document.getElementById('inputRegNo').value = data.regNo || "";
+        document.getElementById('inputDob').value = data.dob || "";
+        document.getElementById('inputAadhaar').value = data.aadhaar || "";
+        document.getElementById('inputPassport').value = data.passport || "";
+        document.getElementById('inputDiscipline').value = data.discipline || "";
+        document.getElementById('inputPermAddress').value = data.permAddress || "";
+        document.getElementById('inputMobile').value = data.mobile || "";
+        document.getElementById('inputAdmission').value = data.admission || "";
+        document.getElementById('inputJoining').value = data.joining || "";
+        document.getElementById('inputStdThis').value = data.stdThis || "";
+        document.getElementById('inputStdLast').value = data.stdLast || "";
+        document.getElementById('inputBankName').value = data.bankName || "";
+        document.getElementById('inputHolder').value = data.holder || "";
+        document.getElementById('inputAccount').value = data.account || "";
+        document.getElementById('inputIfsc').value = data.ifsc || "";
+        document.getElementById('inputMarks').value = data.marks || "";
+
+        if(data.photo){
+
+            document.getElementById('photo').src =
+            data.photo;
+
+            document.getElementById('photo').style.display =
+            'block';
+
+        }
+
+        showPreview();
+
+        alert("PREVIOUS ELIGIBILITY IMPORTED");
+
+    }catch(err){
+
+        console.error(err);
+
+        alert("FAILED TO IMPORT PDF");
+
+    }
+
+});
+
+/* LIVE PREVIEW */
+
+document.querySelectorAll("input").forEach(input=>{
+
+    input.addEventListener("input",()=>{
+
+        showPreview();
+
+    });
+
+    input.addEventListener("change",()=>{
+
+        showPreview();
+
+    });
+
+});
 
 /* AUTO CAPITAL */
 
@@ -675,24 +763,6 @@ formInputs.forEach((input,index)=>{
             }
 
         }
-
-    });
-
-});
-
-/* LIVE PREVIEW */
-
-document.querySelectorAll("input").forEach(input=>{
-
-    input.addEventListener("input",()=>{
-
-        showPreview();
-
-    });
-
-    input.addEventListener("change",()=>{
-
-        showPreview();
 
     });
 
